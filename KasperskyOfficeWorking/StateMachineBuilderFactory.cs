@@ -25,12 +25,12 @@ namespace KasperskyOfficeWorking
                                                && string.Equals(message.Text, "/start",
                                                    StringComparison.InvariantCultureIgnoreCase)),
                         typeof(SendWelcomeMessage)),
-                    new ElseState(initStateNode));
+                    new DefaultState(initStateNode));
 
             var waitEmailState = sendWelcomeMessageState
                 .SetNext(
                     NextStateKind.AfterOnEnter,
-                    new ElseState(typeof(WaitEmail)));
+                    new DefaultState(typeof(WaitEmail)));
 
             var (saveEmailState, cantParseEmailState) = waitEmailState
                 .SetNext(
@@ -40,12 +40,12 @@ namespace KasperskyOfficeWorking
                                                && TryParseEmail(message.Text.Trim(), out var mail)
                                                && mail.Host == new MailAddress("23@kaspersky.com").Host),
                         typeof(SaveEmail)),
-                    new ElseState(typeof(CantParseEmail)));
+                    new DefaultState(typeof(CantParseEmail)));
 
             cantParseEmailState
                 .SetNext(
                     NextStateKind.AfterOnEnter,
-                    new ElseState(waitEmailState));
+                    new DefaultState(waitEmailState));
 
             var (emailAlreadyRegisteredErrorState, sendEmailWithCodeState) = saveEmailState
                 .SetNext(
@@ -53,22 +53,22 @@ namespace KasperskyOfficeWorking
                     new IfState(
                         ctx => Task.FromResult((bool) ctx.Attributes[nameof(SaveEmail.EmailAlreadyRegistered)].value),
                         typeof(EmailAlreadyRegisteredError)),
-                    new ElseState(typeof(SendEmailWithCode)));
+                    new DefaultState(typeof(SendEmailWithCode)));
 
             emailAlreadyRegisteredErrorState
                 .SetNext(
                     NextStateKind.AfterOnEnter,
-                    new ElseState(waitEmailState));
+                    new DefaultState(waitEmailState));
 
             var askAuthorizationCodeState = sendEmailWithCodeState
                 .SetNext(
                     NextStateKind.AfterOnEnter,
-                    new ElseState(typeof(AskAuthorizationCode)));
+                    new DefaultState(typeof(AskAuthorizationCode)));
 
             var waitAuthorizationCodeState = askAuthorizationCodeState
                 .SetNext(
                     NextStateKind.AfterOnEnter,
-                    new ElseState(typeof(WaitAuthorizationCode)));
+                    new DefaultState(typeof(WaitAuthorizationCode)));
 
             var (changeEmailState, sendNewAuthorizationCodeState, authorizationCodeIsWrongErrorState, authorizationCodeIsOkState) = waitAuthorizationCodeState
                 .SetNext(
@@ -82,24 +82,24 @@ namespace KasperskyOfficeWorking
                     new IfState(
                         ctx => Task.FromResult(!(bool)ctx.Attributes[nameof(WaitAuthorizationCode.AuthorizationCodeIsOk)].value),
                         typeof(AuthorizationCodeIsWrongError)),
-                    new ElseState(typeof(AuthorizationCodeIsOk)));
+                    new DefaultState(typeof(AuthorizationCodeIsOk)));
 
             changeEmailState
                 .SetNext(
                     NextStateKind.AfterOnEnter,
-                    new ElseState(waitEmailState));
+                    new DefaultState(waitEmailState));
 
             sendNewAuthorizationCodeState
                 .SetNext(
                     NextStateKind.AfterOnEnter,
-                    new ElseState(sendEmailWithCodeState));
+                    new DefaultState(sendEmailWithCodeState));
 
             authorizationCodeIsWrongErrorState
                 .SetNext(
                     NextStateKind.AfterOnEnter,
-                    new ElseState(waitAuthorizationCodeState));
+                    new DefaultState(waitAuthorizationCodeState));
 
-            var defaultHandleUpdateState = authorizationCodeIsOkState.SetNext(NextStateKind.AfterOnEnter, new ElseState(typeof(HandleUpdate)));
+            var defaultHandleUpdateState = authorizationCodeIsOkState.SetNext(NextStateKind.AfterOnEnter, new DefaultState(typeof(HandleUpdate)));
 
             var (handleMessageState, handleCallbackQueryState, _) = defaultHandleUpdateState
                 .SetNext(
@@ -110,7 +110,7 @@ namespace KasperskyOfficeWorking
                     new IfState(
                         ctx => Task.FromResult(ctx.UpdateContext.Update is CallbackQuery),
                         typeof(HandleCallbackQuery)),
-                    new ElseState(defaultHandleUpdateState));
+                    new DefaultState(defaultHandleUpdateState));
 
             stateMachineBuilder.SetDefaultStateNode(defaultHandleUpdateState);
 
