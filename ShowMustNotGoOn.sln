@@ -21,9 +21,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShowMustNotGoOn.Core", "Sho
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Telegrom", "Telegrom\Telegrom.csproj", "{99FD1511-5132-4359-A151-C508A4EF828A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Telegrom.Database.Sqlite", "Telegrom.Database.Sqlite\Telegrom.Database.Sqlite.csproj", "{9EEC65C6-AC69-4D50-9D1B-303A5ED5403E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Telegrom.Database.Sqlite", "Telegrom.Database.Sqlite\Telegrom.Database.Sqlite.csproj", "{9EEC65C6-AC69-4D50-9D1B-303A5ED5403E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Telegrom.Database.InMemory", "Telegrom.Database.InMemory\Telegrom.Database.InMemory.csproj", "{D31A49A1-BBE7-4626-9C18-4F9CD98C7329}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Telegrom.Database.InMemory", "Telegrom.Database.InMemory\Telegrom.Database.InMemory.csproj", "{D31A49A1-BBE7-4626-9C18-4F9CD98C7329}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KasperskyOfficeWorking", "KasperskyOfficeWorking\KasperskyOfficeWorking.csproj", "{7806B933-3081-4FE9-9032-FC1837D70085}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +77,10 @@ Global
 		{D31A49A1-BBE7-4626-9C18-4F9CD98C7329}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D31A49A1-BBE7-4626-9C18-4F9CD98C7329}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D31A49A1-BBE7-4626-9C18-4F9CD98C7329}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7806B933-3081-4FE9-9032-FC1837D70085}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7806B933-3081-4FE9-9032-FC1837D70085}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7806B933-3081-4FE9-9032-FC1837D70085}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7806B933-3081-4FE9-9032-FC1837D70085}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
