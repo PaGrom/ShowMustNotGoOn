@@ -9,9 +9,9 @@ namespace KasperskyOfficeWorking.States
     {
         protected readonly IStateContext StateContext;
         private readonly string _message;
-        private readonly ReplyKeyboardMarkup _keyboardMarkup;
+        private readonly IReplyMarkup _keyboardMarkup;
 
-        protected SendMessage(IStateContext stateContext, string message, ReplyKeyboardMarkup keyboardMarkup = null)
+        protected SendMessage(IStateContext stateContext, string message, IReplyMarkup keyboardMarkup = null)
         {
             StateContext = stateContext;
             _message = message;

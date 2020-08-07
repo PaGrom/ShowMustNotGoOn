@@ -70,12 +70,15 @@ namespace KasperskyOfficeWorking
                     NextStateKind.AfterOnEnter,
                     new ElseState(typeof(WaitAuthorizationCode)));
 
-            var (changeEmailState, authorizationCodeIsWrongErrorState, authorizationCodeIsOkState) = waitAuthorizationCodeState
+            var (changeEmailState, sendNewAuthorizationCodeState, authorizationCodeIsWrongErrorState, authorizationCodeIsOkState) = waitAuthorizationCodeState
                 .SetNext(
                     NextStateKind.AfterHandle,
                     new IfState(
                         ctx => Task.FromResult(ctx.UpdateContext.Update is Message message && message.Text == ButtonStrings.ChangeEmail),
                         typeof(ChangeEmail)),
+                    new IfState(
+                        ctx => Task.FromResult(ctx.UpdateContext.Update is Message message && message.Text == ButtonStrings.ResendAuthorizationCode),
+                        typeof(SendNewAuthorizationCode)),
                     new IfState(
                         ctx => Task.FromResult(!(bool)ctx.Attributes[nameof(WaitAuthorizationCode.AuthorizationCodeIsOk)].value),
                         typeof(AuthorizationCodeIsWrongError)),
@@ -85,6 +88,11 @@ namespace KasperskyOfficeWorking
                 .SetNext(
                     NextStateKind.AfterOnEnter,
                     new ElseState(waitEmailState));
+
+            sendNewAuthorizationCodeState
+                .SetNext(
+                    NextStateKind.AfterOnEnter,
+                    new ElseState(sendEmailWithCodeState));
 
             authorizationCodeIsWrongErrorState
                 .SetNext(
