@@ -32,5 +32,11 @@ namespace KasperskyOfficeWorking.Services
         {
             return (await _sessionAttributesService.GetAllByTypeAsync<Email>(cancellationToken)).SingleOrDefault();
         }
+
+        public async Task RemoveEmailForUserAsync(CancellationToken cancellationToken)
+        {
+            var email = await GetEmailAsync(cancellationToken);
+            await _sessionAttributesService.RemoveSessionAttributeAsync(email, cancellationToken);
+        }
     }
 }

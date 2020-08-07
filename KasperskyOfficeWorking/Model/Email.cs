@@ -5,7 +5,12 @@ namespace KasperskyOfficeWorking.Model
 {
     public sealed class Email : ISessionAttribute
     {
-        public Guid Id { get; } = Guid.NewGuid();
+        public Email(Guid guid)
+        {
+            Id = guid;
+        }
+
+        public Guid Id { get; set; }
 
         public string EmailAddress { get; set; }
 

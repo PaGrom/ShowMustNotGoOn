@@ -28,7 +28,7 @@ namespace KasperskyOfficeWorking.States
 
         public override async Task OnEnter(CancellationToken cancellationToken)
         {
-            Email = new Email
+            Email = new Email(Guid.NewGuid())
             {
                 EmailAddress = ((Message)_stateContext.UpdateContext.Update).Text.Trim(),
                 IsAuthorized = false,
