@@ -5,11 +5,11 @@ using Telegrom.StateMachine;
 
 namespace KasperskyOfficeWorking.States
 {
-    public sealed class ProcessEmptyCalendarCallback : StateBase
+    public sealed class AnswerCalendarCallback : StateBase
     {
         private readonly IStateContext _stateContext;
 
-        public ProcessEmptyCalendarCallback(IStateContext stateContext)
+        public AnswerCalendarCallback(IStateContext stateContext)
         {
             _stateContext = stateContext;
         }

@@ -24,10 +24,6 @@ namespace KasperskyOfficeWorking.States
         {
             var callbackQuery = (CallbackQuery) _stateContext.UpdateContext.Update;
 
-            var answerCallbackQueryRequest = new AnswerCallbackQueryRequest(callbackQuery.Id);
-
-            await _stateContext.UpdateContext.SessionContext.PostRequestAsync(answerCallbackQueryRequest, cancellationToken);
-
             var data = InlineCalendar.ParseCallback(callbackQuery);
             var request = new EditMessageReplyMarkupRequest(_stateContext.UpdateContext.SessionContext.User.Id, callbackQuery.MessageId)
             {

@@ -35,9 +35,17 @@ namespace KasperskyOfficeWorking
                     NextStateKind.AfterOnEnter,
                     new DefaultState(typeof(WaitChooseDate)));
 
-            var (processPrevCalendarCallbackState, processNextCalendarCallbackState, processEmptyCalendarCallbackState, _) = waitChooseDate
+            var (answerCalendarCallbackState, _) = waitChooseDate
                 .SetNext(
                     NextStateKind.AfterHandle,
+                    new IfState(
+                        ctx => Task.FromResult(ctx.UpdateContext.Update is CallbackQuery),
+                        typeof(AnswerCalendarCallback)),
+                    new DefaultState(waitChooseDate));
+
+            var (processPrevCalendarCallbackState, processNextCalendarCallbackState, processDateCalendarCallbackState, _) = answerCalendarCallbackState
+                .SetNext(
+                    NextStateKind.AfterOnEnter,
                     new IfState(
                         ctx => Task.FromResult(
                             ctx.UpdateContext.Update is CallbackQuery query
@@ -51,14 +59,27 @@ namespace KasperskyOfficeWorking
                     new IfState(
                         ctx => Task.FromResult(
                             ctx.UpdateContext.Update is CallbackQuery query
-                            && new []{ CalendarCallbackType.Empty , CalendarCallbackType.Unknown}
-                                .Contains(InlineCalendar.ParseCallback(query).Type)),
-                        typeof(ProcessEmptyCalendarCallback)),
+                            && InlineCalendar.ParseCallback(query).Type == CalendarCallbackType.Date),
+                        typeof(ProcessDateCalendarCallback)),
                     new DefaultState(waitChooseDate));
 
             processPrevCalendarCallbackState.SetNext(NextStateKind.AfterOnEnter, new DefaultState(waitChooseDate));
             processNextCalendarCallbackState.SetNext(NextStateKind.AfterOnEnter, new DefaultState(waitChooseDate));
-            processEmptyCalendarCallbackState.SetNext(NextStateKind.AfterOnEnter, new DefaultState(waitChooseDate));
+
+            var (dateAlreadyBookedErrorState, notAvailableDateErrorState, bookOfficeDayState) = processDateCalendarCallbackState
+                .SetNext(
+                    NextStateKind.AfterOnEnter,
+                    new IfState(
+                        ctx => Task.FromResult((bool)ctx.Attributes[nameof(ProcessDateCalendarCallback.DateAlreadyBooked)].value),
+                        typeof(DateAlreadyBookedError)),
+                    new IfState(
+                        ctx => Task.FromResult((bool)ctx.Attributes[nameof(ProcessDateCalendarCallback.NotAvailableDate)].value),
+                        typeof(NotAvailableDateError)),
+                    new DefaultState(typeof(BookOfficeDay)));
+
+            dateAlreadyBookedErrorState.SetNext(NextStateKind.AfterOnEnter, new DefaultState(chooseDate));
+            notAvailableDateErrorState.SetNext(NextStateKind.AfterOnEnter, new DefaultState(chooseDate));
+            bookOfficeDayState.SetNext(NextStateKind.AfterOnEnter, new DefaultState(chooseDate));
 
             return stateMachineBuilder;
 

@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using KasperskyOfficeWorking.Calendar;
 using KasperskyOfficeWorking.Services;
+using KasperskyOfficeWorking.Text;
 using Telegrom.Core.TelegramModel;
 using Telegrom.StateMachine;
 
@@ -24,7 +25,9 @@ namespace KasperskyOfficeWorking.States
         {
             var request = new SendMessageRequest(
                 _stateContext.UpdateContext.SessionContext.User.Id,
-                "Выберите дату",
+                "Выберите дату\n" +
+                $"{DayMarkers.AvailableToBookDay} - дни, в которые можно выйти в офис\n" +
+                $"{DayMarkers.OfficeDayMarker} - дни, забронированные вами для работы в офисе",
                 InlineCalendar.CreateCalendar(null, null, (await _calendarConditionBuilder.BuildAsync(cancellationToken)).ToArray()));
 
             await _stateContext.UpdateContext.SessionContext.PostRequestAsync(request, cancellationToken);
