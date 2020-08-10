@@ -32,6 +32,9 @@ namespace KasperskyOfficeWorking
             builder.RegisterType<CalendarConditionBuilder>()
                 .InstancePerUpdate();
 
+            builder.RegisterType<AvailableForBookingDaysService>()
+                .SingleInstance();
+
             var stateMachineBuilder = StateMachineBuilderFactory.Create();
 
             TelegromConfiguration.Configuration

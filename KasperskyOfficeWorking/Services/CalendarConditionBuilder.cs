@@ -9,10 +9,12 @@ namespace KasperskyOfficeWorking.Services
     public sealed class CalendarConditionBuilder
     {
         private readonly OfficeDayService _officeDayService;
+        private readonly AvailableForBookingDaysService _availableForBookingDaysService;
 
-        public CalendarConditionBuilder(OfficeDayService officeDayService)
+        public CalendarConditionBuilder(OfficeDayService officeDayService, AvailableForBookingDaysService availableForBookingDaysService)
         {
             _officeDayService = officeDayService;
+            _availableForBookingDaysService = availableForBookingDaysService;
         }
 
         public async Task<IEnumerable<(Func<DateTime, bool> condition, string marker)>> BuildAsync(CancellationToken cancellationToken)
@@ -26,9 +28,10 @@ namespace KasperskyOfficeWorking.Services
                 conditions.Add((d => d.Date == officeDay.Date, DayMarkers.OfficeDayMarker));
             }
 
-            var today = DateTime.Today;
-
-            conditions.Add((d => d.Date >= today.Date && d.Date < today.AddDays(7).Date, DayMarkers.AvailableToBookDay));
+            foreach (var date in _availableForBookingDaysService.Get())
+            {
+                conditions.Add((d => d.Date == date.Date, DayMarkers.AvailableToBookDay));
+            }
 
             return conditions;
         }
