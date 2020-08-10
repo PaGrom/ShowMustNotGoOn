@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Telegrom.Core.TelegramModel;
 
-namespace KasperskyOfficeWorking.Extensions
+namespace KasperskyOfficeWorking.Calendar
 {
     public static class InlineCalendar
     {
@@ -158,13 +159,16 @@ namespace KasperskyOfficeWorking.Extensions
                 };
             }
 
-            var date = DateTime.ParseExact(callbackQuery.Data, Format, null);
-
-            return new CalendarCallbackData
+            if (DateTime.TryParseExact(callbackQuery.Data, Format, null, DateTimeStyles.None, out var date))
             {
-                Type = CalendarCallbackType.Date,
-                DateTime = date
-            };
+                return new CalendarCallbackData
+                {
+                    Type = CalendarCallbackType.Date,
+                    DateTime = date
+                };
+            }
+
+            return CalendarCallbackData.Unknown;
         }
 
         private static string GetMonthName(int i)

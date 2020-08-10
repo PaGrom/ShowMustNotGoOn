@@ -1,7 +1,8 @@
 using System;
+using System.Linq;
 using System.Net.Mail;
 using System.Threading.Tasks;
-using KasperskyOfficeWorking.Extensions;
+using KasperskyOfficeWorking.Calendar;
 using KasperskyOfficeWorking.States;
 using Telegrom.Core.TelegramModel;
 using Telegrom.StateMachine;
@@ -49,7 +50,8 @@ namespace KasperskyOfficeWorking
                     new IfState(
                         ctx => Task.FromResult(
                             ctx.UpdateContext.Update is CallbackQuery query
-                            && InlineCalendar.ParseCallback(query).Type == CalendarCallbackType.Empty),
+                            && new []{ CalendarCallbackType.Empty , CalendarCallbackType.Unknown}
+                                .Contains(InlineCalendar.ParseCallback(query).Type)),
                         typeof(ProcessEmptyCalendarCallback)),
                     new DefaultState(waitChooseDate));
 

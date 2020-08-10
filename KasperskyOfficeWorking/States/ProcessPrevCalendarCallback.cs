@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using KasperskyOfficeWorking.Extensions;
+using KasperskyOfficeWorking.Calendar;
 using Telegrom.Core.TelegramModel;
 using Telegrom.StateMachine;
 
