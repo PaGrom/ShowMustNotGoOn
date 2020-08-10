@@ -26,6 +26,12 @@ namespace KasperskyOfficeWorking
             builder.RegisterType<EmailService>()
                 .InstancePerUpdate();
 
+            builder.RegisterType<OfficeDayService>()
+                .InstancePerUpdate();
+
+            builder.RegisterType<CalendarConditionBuilder>()
+                .InstancePerUpdate();
+
             var stateMachineBuilder = StateMachineBuilderFactory.Create();
 
             TelegromConfiguration.Configuration

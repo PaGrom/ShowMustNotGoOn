@@ -4,6 +4,7 @@ using System.Net.Mail;
 using System.Threading.Tasks;
 using KasperskyOfficeWorking.Calendar;
 using KasperskyOfficeWorking.States;
+using KasperskyOfficeWorking.Text;
 using Telegrom.Core.TelegramModel;
 using Telegrom.StateMachine;
 using Telegrom.StateMachine.Builder;

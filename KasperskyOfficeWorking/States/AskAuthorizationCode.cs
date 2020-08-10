@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using KasperskyOfficeWorking.Model;
+using KasperskyOfficeWorking.Text;
 using Telegrom.Core.TelegramModel;
 using Telegrom.StateMachine;
 using Telegrom.StateMachine.Attributes;
