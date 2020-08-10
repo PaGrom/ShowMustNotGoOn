@@ -1,6 +1,7 @@
 using System;
 using System.Net.Mail;
 using System.Threading.Tasks;
+using KasperskyOfficeWorking.Extensions;
 using KasperskyOfficeWorking.States;
 using Telegrom.Core.TelegramModel;
 using Telegrom.StateMachine;
@@ -15,6 +16,48 @@ namespace KasperskyOfficeWorking
             var stateMachineBuilder = new StateMachineBuilder();
 
             var initStateNode = stateMachineBuilder.AddInit<Start>();
+
+            var (chooseDate, _) = initStateNode
+                .SetNext(
+                    NextStateKind.AfterHandle,
+                    new IfState(
+                        ctx => Task.FromResult(ctx.UpdateContext.Update is Message message
+                                               && message.IsCommand()
+                                               && string.Equals(message.Text, "/start",
+                                                   StringComparison.InvariantCultureIgnoreCase)),
+                        typeof(ChooseDate)),
+                    new DefaultState(initStateNode));
+
+            var waitChooseDate = chooseDate
+                .SetNext(
+                    NextStateKind.AfterOnEnter,
+                    new DefaultState(typeof(WaitChooseDate)));
+
+            var (processPrevCalendarCallbackState, processNextCalendarCallbackState, processEmptyCalendarCallbackState, _) = waitChooseDate
+                .SetNext(
+                    NextStateKind.AfterHandle,
+                    new IfState(
+                        ctx => Task.FromResult(
+                            ctx.UpdateContext.Update is CallbackQuery query
+                            && InlineCalendar.ParseCallback(query).Type == CalendarCallbackType.Prev),
+                        typeof(ProcessPrevCalendarCallback)),
+                    new IfState(
+                        ctx => Task.FromResult(
+                            ctx.UpdateContext.Update is CallbackQuery query
+                            && InlineCalendar.ParseCallback(query).Type == CalendarCallbackType.Next),
+                        typeof(ProcessNextCalendarCallback)),
+                    new IfState(
+                        ctx => Task.FromResult(
+                            ctx.UpdateContext.Update is CallbackQuery query
+                            && InlineCalendar.ParseCallback(query).Type == CalendarCallbackType.Empty),
+                        typeof(ProcessEmptyCalendarCallback)),
+                    new DefaultState(waitChooseDate));
+
+            processPrevCalendarCallbackState.SetNext(NextStateKind.AfterOnEnter, new DefaultState(waitChooseDate));
+            processNextCalendarCallbackState.SetNext(NextStateKind.AfterOnEnter, new DefaultState(waitChooseDate));
+            processEmptyCalendarCallbackState.SetNext(NextStateKind.AfterOnEnter, new DefaultState(waitChooseDate));
+
+            return stateMachineBuilder;
 
             var (sendWelcomeMessageState, _) = initStateNode
                 .SetNext(

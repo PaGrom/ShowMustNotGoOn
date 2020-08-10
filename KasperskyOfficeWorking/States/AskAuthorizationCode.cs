@@ -1,4 +1,4 @@
-using System.Threading;
+п»їusing System.Threading;
 using System.Threading.Tasks;
 using KasperskyOfficeWorking.Model;
 using Telegrom.Core.TelegramModel;
@@ -21,7 +21,7 @@ namespace KasperskyOfficeWorking.States
 
         public override Task OnEnter(CancellationToken cancellationToken)
         {
-            var message = $"Скопируйте код из письма сюда, пожалуйста. (На данный момент мы не отправляем письмо. Ваш код: {Email.AuthorizationCode})";
+            var message = $"РЎРєРѕРїРёСЂСѓР№С‚Рµ РєРѕРґ РёР· РїРёСЃСЊРјР° СЃСЋРґР°, РїРѕР¶Р°Р»СѓР№СЃС‚Р°. (РќР° РґР°РЅРЅС‹Р№ РјРѕРјРµРЅС‚ РјС‹ РЅРµ РѕС‚РїСЂР°РІР»СЏРµРј РїРёСЃСЊРјРѕ. Р’Р°С€ РєРѕРґ: {Email.AuthorizationCode})";
 
             var keyboard = new ReplyKeyboardMarkup(
                 new[]
@@ -41,7 +41,11 @@ namespace KasperskyOfficeWorking.States
                 OneTimeKeyboard = true
             };
 
-            var request = new SendMessageRequest(_stateContext.UpdateContext.SessionContext.User.Id, message, keyboard);
+            var request = new SendMessageRequest(
+                _stateContext.UpdateContext.SessionContext.User.Id,
+                message,
+                keyboard);
+
             return _stateContext.UpdateContext.SessionContext.PostRequestAsync(request, cancellationToken);
         }
     }
