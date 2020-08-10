@@ -1,4 +1,4 @@
-using Telegrom.Core.TelegramModel;
+п»їusing Telegrom.Core.TelegramModel;
 using Telegrom.StateMachine;
 
 namespace KasperskyOfficeWorking.States
@@ -6,7 +6,7 @@ namespace KasperskyOfficeWorking.States
     public sealed class AuthorizationCodeIsOk : SendMessage
     {
         public AuthorizationCodeIsOk(IStateContext stateContext)
-            : base(stateContext, "Код авторизации верный. Вы успешно зарегестрированы", new ReplyKeyboardRemove())
+            : base(stateContext, "РљРѕРґ Р°РІС‚РѕСЂРёР·Р°С†РёРё РІРµСЂРЅС‹Р№. Р’С‹ СѓСЃРїРµС€РЅРѕ Р·Р°СЂРµРіРµСЃС‚СЂРёСЂРѕРІР°РЅС‹", new ReplyKeyboardRemove())
         {
         }
     }

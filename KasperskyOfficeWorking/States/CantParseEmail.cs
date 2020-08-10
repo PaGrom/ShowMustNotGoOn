@@ -1,4 +1,4 @@
-using Telegrom.StateMachine;
+п»їusing Telegrom.StateMachine;
 
 namespace KasperskyOfficeWorking.States
 {
@@ -6,7 +6,7 @@ namespace KasperskyOfficeWorking.States
     {
         public CantParseEmail(IStateContext stateContext)
             : base(stateContext,
-                "К сожалению, мы не смогли правильно распознать ваш email. Проверьте его и отправьте нам снова")
+                "Рљ СЃРѕР¶Р°Р»РµРЅРёСЋ, РјС‹ РЅРµ СЃРјРѕРіР»Рё РїСЂР°РІРёР»СЊРЅРѕ СЂР°СЃРїРѕР·РЅР°С‚СЊ РІР°С€ email. РџСЂРѕРІРµСЂСЊС‚Рµ РµРіРѕ Рё РѕС‚РїСЂР°РІСЊС‚Рµ РЅР°Рј СЃРЅРѕРІР°")
         { }
     }
 }

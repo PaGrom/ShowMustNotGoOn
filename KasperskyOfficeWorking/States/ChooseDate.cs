@@ -22,6 +22,10 @@ namespace KasperskyOfficeWorking.States
 
         public override async Task OnEnter(CancellationToken cancellationToken)
         {
+            //var request = new SendMessageRequest(_stateContext.UpdateContext.SessionContext.User.Id, "Выберите дату", new ReplyKeyboardRemove());
+
+            //await _stateContext.UpdateContext.SessionContext.PostRequestAsync(request, cancellationToken);
+            
             var request = new SendMessageRequest(
                 _stateContext.UpdateContext.SessionContext.User.Id,
                 "Выберите дату\n" +

@@ -1,11 +1,11 @@
-using Telegrom.StateMachine;
+п»їusing Telegrom.StateMachine;
 
 namespace KasperskyOfficeWorking.States
 {
     public sealed class EmailAlreadyRegisteredError : SendMessage
     {
         public EmailAlreadyRegisteredError(IStateContext stateContext)
-            : base(stateContext, "К сожалению, адрес, который вы указали, уже зарегестрирован. Обратитесь к администратору")
+            : base(stateContext, "Рљ СЃРѕР¶Р°Р»РµРЅРёСЋ, Р°РґСЂРµСЃ, РєРѕС‚РѕСЂС‹Р№ РІС‹ СѓРєР°Р·Р°Р»Рё, СѓР¶Рµ Р·Р°СЂРµРіРµСЃС‚СЂРёСЂРѕРІР°РЅ. РћР±СЂР°С‚РёС‚РµСЃСЊ Рє Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂСѓ")
         {
         }
     }

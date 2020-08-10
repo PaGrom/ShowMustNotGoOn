@@ -31,7 +31,7 @@ namespace KasperskyOfficeWorking.States
 
             await _officeDayService.RemoveOfficeDayAsync(date, cancellationToken);
 
-            var request = new SendMessageRequest(_stateContext.UpdateContext.SessionContext.User.Id, $"Приятной работы {Date:dd/MM/yyyy} из дома!");
+            var request = new SendMessageRequest(_stateContext.UpdateContext.SessionContext.User.Id, $"Приятной работы {Date:dd/MM/yyyy} из дома!", new ReplyKeyboardRemove());
             await _stateContext.UpdateContext.SessionContext.PostRequestAsync(request, cancellationToken);
         }
     }

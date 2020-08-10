@@ -9,5 +9,7 @@
         public static string CancelBookingOfficeDayYes = "Да";
 
         public static string CancelBookingOfficeDayNo = "Нет";
+
+        public static string OpenCalendar = "Открыть календарь";
     }
 }

@@ -15,7 +15,7 @@ namespace Telegrom.Core.Contexts
         private readonly object _syncRoot = new object();
         private readonly LinkedList<int> _recentSessionContextsQueue = new LinkedList<int>();
         private readonly Dictionary<int, SessionContext> _sessionContexts = new Dictionary<int, SessionContext>();
-        private const int MaxActiveSessions = 1;
+        private const int MaxActiveSessions = 10;
 
         public SessionManager(ILifetimeScope lifetimeScope, IIdentityService identityService)
         {

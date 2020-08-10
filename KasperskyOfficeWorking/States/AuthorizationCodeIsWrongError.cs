@@ -1,10 +1,10 @@
-using Telegrom.StateMachine;
+п»їusing Telegrom.StateMachine;
 
 namespace KasperskyOfficeWorking.States
 {
     public sealed class AuthorizationCodeIsWrongError : SendMessage
     {
-        public AuthorizationCodeIsWrongError(IStateContext stateContext) : base(stateContext, "Код авторизации неверный")
+        public AuthorizationCodeIsWrongError(IStateContext stateContext) : base(stateContext, "РљРѕРґ Р°РІС‚РѕСЂРёР·Р°С†РёРё РЅРµРІРµСЂРЅС‹Р№")
         {
         }
     }

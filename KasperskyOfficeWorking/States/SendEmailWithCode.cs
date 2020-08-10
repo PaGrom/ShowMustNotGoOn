@@ -1,4 +1,4 @@
-using System.Threading;
+п»їusing System.Threading;
 using System.Threading.Tasks;
 using Telegrom.Core.TelegramModel;
 using Telegrom.StateMachine;
@@ -16,7 +16,7 @@ namespace KasperskyOfficeWorking.States
 
         public override Task OnEnter(CancellationToken cancellationToken)
         {
-            const string message = "На ваш адрес было отправлено письмо c кодом авторизации";
+            const string message = "РќР° РІР°С€ Р°РґСЂРµСЃ Р±С‹Р»Рѕ РѕС‚РїСЂР°РІР»РµРЅРѕ РїРёСЃСЊРјРѕ c РєРѕРґРѕРј Р°РІС‚РѕСЂРёР·Р°С†РёРё";
 
             var request = new SendMessageRequest(_stateContext.UpdateContext.SessionContext.User.Id, message);
             return _stateContext.UpdateContext.SessionContext.PostRequestAsync(request, cancellationToken);

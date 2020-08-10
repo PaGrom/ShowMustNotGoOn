@@ -1,4 +1,4 @@
-using System.Threading;
+п»їusing System.Threading;
 using System.Threading.Tasks;
 using KasperskyOfficeWorking.Services;
 using Telegrom.StateMachine;
@@ -9,7 +9,7 @@ namespace KasperskyOfficeWorking.States
     {
         private readonly EmailService _emailService;
 
-        public ChangeEmail(IStateContext stateContext, EmailService emailService) : base(stateContext, "Введите новый email")
+        public ChangeEmail(IStateContext stateContext, EmailService emailService) : base(stateContext, "Р’РІРµРґРёС‚Рµ РЅРѕРІС‹Р№ email")
         {
             _emailService = emailService;
         }
