@@ -77,9 +77,27 @@ namespace KasperskyOfficeWorking
                         typeof(NotAvailableDateError)),
                     new DefaultState(typeof(BookOfficeDay)));
 
-            dateAlreadyBookedErrorState.SetNext(NextStateKind.AfterOnEnter, new DefaultState(chooseDate));
+            var waitCancelBookAnswerState = dateAlreadyBookedErrorState
+                .SetNext(
+                    NextStateKind.AfterOnEnter,
+                    new DefaultState(typeof(WaitCancelBookAnswer)));
+
+            var (cancelBookingOfficeDayState, _, _) = waitCancelBookAnswerState
+                .SetNext(
+                    NextStateKind.AfterHandle,
+                    new IfState(
+                        ctx => Task.FromResult(ctx.UpdateContext.Update is Message message
+                                               && message.Text == ButtonStrings.CancelBookingOfficeDayYes),
+                        typeof(CancelBookingOfficeDay)),
+                    new IfState(
+                        ctx => Task.FromResult(ctx.UpdateContext.Update is Message message
+                                               && message.Text == ButtonStrings.CancelBookingOfficeDayNo),
+                        chooseDate),
+                    new DefaultState(waitCancelBookAnswerState));
+
             notAvailableDateErrorState.SetNext(NextStateKind.AfterOnEnter, new DefaultState(chooseDate));
             bookOfficeDayState.SetNext(NextStateKind.AfterOnEnter, new DefaultState(chooseDate));
+            cancelBookingOfficeDayState.SetNext(NextStateKind.AfterOnEnter, new DefaultState(chooseDate));
 
             return stateMachineBuilder;
 
