@@ -22,7 +22,7 @@ namespace KasperskyOfficeWorking.States
 
         public override Task OnEnter(CancellationToken cancellationToken)
         {
-            var message = $"Скопируйте код из письма сюда, пожалуйста. (На данный момент мы не отправляем письмо. Ваш код: {Email.AuthorizationCode})";
+            var message = $"Скопируйте код из письма сюда, пожалуйста (На данный момент мы не отправляем письмо. Ваш код: {Email.AuthorizationCode})";
 
             var keyboard = new ReplyKeyboardMarkup(
                 new[]

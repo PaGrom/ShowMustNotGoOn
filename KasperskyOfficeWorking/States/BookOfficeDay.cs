@@ -27,7 +27,7 @@ namespace KasperskyOfficeWorking.States
         {
             await _officeDayService.AddOfficeDayAsync(new OfficeDay(Guid.NewGuid()) {Date = Date}, cancellationToken);
 
-            var request = new SendMessageRequest(_stateContext.UpdateContext.SessionContext.User.Id, $"Ждем вас {Date:dd/MM/yyyy} в офисе!");
+            var request = new SendMessageRequest(_stateContext.UpdateContext.SessionContext.User.Id, $"Ждем Вас {Date:dd/MM/yyyy} в офисе!");
             await _stateContext.UpdateContext.SessionContext.PostRequestAsync(request, cancellationToken);
         }
     }

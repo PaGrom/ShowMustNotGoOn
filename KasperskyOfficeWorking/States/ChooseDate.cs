@@ -30,7 +30,7 @@ namespace KasperskyOfficeWorking.States
                 _stateContext.UpdateContext.SessionContext.User.Id,
                 "Выберите дату\n" +
                 $"{DayMarkers.AvailableToBookDay} - дни, в которые можно выйти в офис\n" +
-                $"{DayMarkers.OfficeDayMarker} - дни, забронированные вами для работы в офисе",
+                $"{DayMarkers.OfficeDayMarker} - дни, забронированные Вами для работы в офисе",
                 InlineCalendar.CreateCalendar(null, null, (await _calendarConditionBuilder.BuildAsync(cancellationToken)).ToArray()));
 
             await _stateContext.UpdateContext.SessionContext.PostRequestAsync(request, cancellationToken);
