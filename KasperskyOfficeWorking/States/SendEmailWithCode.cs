@@ -16,7 +16,7 @@ namespace KasperskyOfficeWorking.States
 
         public override Task OnEnter(CancellationToken cancellationToken)
         {
-            const string message = "На ваш адрес было отправлено письмо c кодом авторизации";
+            const string message = "На Ваш адрес было отправлено письмо c кодом авторизации";
 
             var request = new SendMessageRequest(_stateContext.UpdateContext.SessionContext.User.Id, message);
             return _stateContext.UpdateContext.SessionContext.PostRequestAsync(request, cancellationToken);
