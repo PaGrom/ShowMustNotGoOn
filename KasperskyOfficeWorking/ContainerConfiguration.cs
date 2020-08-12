@@ -42,9 +42,12 @@ namespace KasperskyOfficeWorking
                 {
                     TelegramApiToken = appSettings.TelegramSettings.TelegramApiToken
                 })
-                //.UseSqliteDatabase(appSettings.DatabaseSettings.ConnectionString, optionsBuilder => optionsBuilder.EnableSensitiveDataLogging())
-                .UseInMemoryDatabase("23", optionsBuilder => optionsBuilder.EnableSensitiveDataLogging())
+                .UseSqliteDatabase(appSettings.DatabaseSettings.ConnectionString, optionsBuilder => optionsBuilder.EnableSensitiveDataLogging())
+                //.UseInMemoryDatabase("23", optionsBuilder => optionsBuilder.EnableSensitiveDataLogging())
                 .AddStateMachineBuilder(stateMachineBuilder);
+
+            builder.RegisterType<TelegromClient>()
+                .InstancePerDependency();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Telegrom;
 
@@ -14,6 +15,8 @@ namespace KasperskyOfficeWorking
             Host.CreateDefaultBuilder(args)
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                 .ConfigureContainer<ContainerBuilder>((hostContext, builder) => ContainerConfiguration.Init(hostContext.Configuration, builder))
-                .ConfigureServices(services => services.AddTelegromBot());
+                .ConfigureServices(services => services
+                    .AddTelegromBot()
+                    .AddHostedService<KasperskyOfficeBotService>());
     }
 }
