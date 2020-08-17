@@ -10,19 +10,23 @@ namespace KasperskyOfficeWorking
 {
     public class KasperskyOfficeBotService : BackgroundService
     {
-        private readonly TelegromClient _telegromClient;
+        private readonly TelegromBot _telegromBot;
+        private TelegromClient _telegromClient;
 
-        public KasperskyOfficeBotService(TelegromClient telegromClient)
+        public KasperskyOfficeBotService(TelegromBot telegromBot)
         {
-            _telegromClient = telegromClient;
+            _telegromBot = telegromBot;
         }
 
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)
         {
+            _telegromClient = _telegromBot.TelegromClient;
+
             var users = await _telegromClient.GetUsers().ToListAsync(cancellationToken);
-            var isTodayInOffice = await _telegromClient.GetUserAttributes<OfficeDay>(users.First())
-                .Where(e => e.Date == DateTime.Today)
-                .AnyAsync(cancellationToken);
+            await _telegromClient.SendMessageAsync(users.First(), "23", cancellationToken);
+            //var isTodayInOffice = await _telegromClient.GetUserAttributes<OfficeDay>(users.First())
+            //    .Where(e => e.Date == DateTime.Today)
+            //    .AnyAsync(cancellationToken);
         }
     }
 }

@@ -2,6 +2,7 @@ using Autofac;
 using KasperskyOfficeWorking.Services;
 using KasperskyOfficeWorking.Settings;
 using Microsoft.Extensions.Configuration;
+using Serilog;
 using Telegrom;
 using Telegrom.Core.Extensions;
 using Telegrom.Database.InMemory;
@@ -15,6 +16,10 @@ namespace KasperskyOfficeWorking
     {
         internal static void Init(IConfiguration configuration, ContainerBuilder builder)
         {
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(configuration)
+                .CreateLogger();
+
             var appSettings = new AppSettings
             {
                 DatabaseSettings = configuration.GetSection("Database").Get<DatabaseSettings>(),
@@ -45,9 +50,6 @@ namespace KasperskyOfficeWorking
                 .UseSqliteDatabase(appSettings.DatabaseSettings.ConnectionString, optionsBuilder => optionsBuilder.EnableSensitiveDataLogging())
                 //.UseInMemoryDatabase("23", optionsBuilder => optionsBuilder.EnableSensitiveDataLogging())
                 .AddStateMachineBuilder(stateMachineBuilder);
-
-            builder.RegisterType<TelegromClient>()
-                .InstancePerDependency();
         }
     }
 }

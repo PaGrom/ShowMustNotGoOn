@@ -3,11 +3,12 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 using Telegrom;
 
 namespace KasperskyOfficeWorking
 {
-    class Program
+    internal class Program
     {
         private static async Task Main(string[] args) => await CreateHostBuilder(args).Build().RunAsync();
 
@@ -16,6 +17,7 @@ namespace KasperskyOfficeWorking
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                 .ConfigureContainer<ContainerBuilder>((hostContext, builder) => ContainerConfiguration.Init(hostContext.Configuration, builder))
                 .ConfigureServices(services => services
+                    .AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true))
                     .AddTelegromBot()
                     .AddHostedService<KasperskyOfficeBotService>());
     }
