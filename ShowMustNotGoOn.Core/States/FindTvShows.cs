@@ -3,9 +3,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ShowMustNotGoOn.Core.Model;
-using Telegrom.Core.TelegramModel;
 using Telegrom.StateMachine;
 using Telegrom.StateMachine.Attributes;
+using Message = Telegrom.Core.TelegramModel.Message;
 
 namespace ShowMustNotGoOn.Core.States
 {

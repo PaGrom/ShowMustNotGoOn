@@ -1,6 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
-using Telegrom.Core.TelegramModel;
+using Telegram.Bot.Types.ReplyMarkups;
 using Telegrom.StateMachine;
 using Telegrom.StateMachine.Attributes;
 

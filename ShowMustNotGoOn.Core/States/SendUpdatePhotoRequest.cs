@@ -1,9 +1,13 @@
 using System.Threading;
 using System.Threading.Tasks;
 using ShowMustNotGoOn.Core.Model;
+using Telegram.Bot.Requests;
+using Telegram.Bot.Types;
+using Telegram.Bot.Types.ReplyMarkups;
 using Telegrom.Core.TelegramModel;
 using Telegrom.StateMachine;
 using Telegrom.StateMachine.Attributes;
+using CallbackQuery = Telegrom.Core.TelegramModel.CallbackQuery;
 
 namespace ShowMustNotGoOn.Core.States
 {
@@ -32,20 +36,20 @@ namespace ShowMustNotGoOn.Core.States
 
             var answerCallbackQueryRequest = new AnswerCallbackQueryRequest(callbackQuery.Id);
 
-            await _stateContext.UpdateContext.SessionContext.PostRequestAsync(answerCallbackQueryRequest, cancellationToken);
+            await _stateContext.UpdateContext.SessionContext.PostRequestAsync(new Request(answerCallbackQueryRequest), cancellationToken);
 
             var tvShowDescription = await _tvShowsService.GetTvShowDescriptionAsync(CurrentTvShowInfo.MyShowsId, cancellationToken);
 
-            var editMessageMediaRequest = new EditMessageMediaRequest(userId, callbackQuery.MessageId, tvShowDescription.Image);
+            var editMessageMediaRequest = new EditMessageMediaRequest(userId, callbackQuery.MessageId, new InputMediaPhoto(new InputMedia(tvShowDescription.Image)));
 
-            await _stateContext.UpdateContext.SessionContext.PostRequestAsync(editMessageMediaRequest, cancellationToken);
+            await _stateContext.UpdateContext.SessionContext.PostRequestAsync(new Request(editMessageMediaRequest), cancellationToken);
 
             var editCaptionRequest = new EditMessageCaptionRequest(userId, callbackQuery.MessageId, $"{ tvShowDescription.Title } / { tvShowDescription.TitleOriginal}")
             {
                 ReplyMarkup = InlineKeyboardMarkup
             };
 
-            await _stateContext.UpdateContext.SessionContext.PostRequestAsync(editCaptionRequest, cancellationToken);
+            await _stateContext.UpdateContext.SessionContext.PostRequestAsync(new Request(editCaptionRequest), cancellationToken);
         }
     }
 }

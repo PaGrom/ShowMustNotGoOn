@@ -1,0 +1,3 @@
+[submodule "Telegrom"]
+	path = Telegrom
+	url = https://github.com/PaGrom/Telegrom.git

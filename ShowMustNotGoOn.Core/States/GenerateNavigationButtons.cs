@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ShowMustNotGoOn.Core.Model;
+using Telegram.Bot.Types.ReplyMarkups;
 using Telegrom.Core;
-using Telegrom.Core.TelegramModel;
 using Telegrom.StateMachine;
 using Telegrom.StateMachine.Attributes;
 
@@ -50,7 +51,7 @@ namespace ShowMustNotGoOn.Core.States
                 buttons.Add(InlineKeyboardButton.WithCallbackData("Next", callback.Id.ToString()));
             }
 
-            InlineKeyboardMarkup.AddRow(buttons);
+            InlineKeyboardMarkup = new InlineKeyboardMarkup(InlineKeyboardMarkup.InlineKeyboard.Append(buttons));
 
             // TODO: Move to UnitOfWork
             async Task<Callback> CreateCallbackAsync(Guid botMessageId, CallbackType callbackType)

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ShowMustNotGoOn.Core.Model;
+using Telegram.Bot.Types.ReplyMarkups;
 using Telegrom.Core;
 using Telegrom.Core.TelegramModel;
 using Telegrom.StateMachine;
@@ -50,7 +51,7 @@ namespace ShowMustNotGoOn.Core.States
                 buttons.Add(InlineKeyboardButton.WithCallbackData("Subscribe to end of show", callback.Id.ToString()));
             }
 
-            InlineKeyboardMarkup.AddRow(buttons);
+            InlineKeyboardMarkup = new InlineKeyboardMarkup(InlineKeyboardMarkup.InlineKeyboard.Append(buttons));
 
             async Task<Callback> CreateCallbackAsync(Guid botMessageId, CallbackType callbackType)
             {

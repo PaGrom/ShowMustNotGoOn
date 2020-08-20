@@ -1,7 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using ShowMustNotGoOn.Core.Model;
-using Telegrom.Core.TelegramModel;
+using Telegram.Bot.Requests;
 using Telegrom.StateMachine;
 using Telegrom.StateMachine.Attributes;
 

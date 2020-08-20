@@ -1,5 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
+using Telegram.Bot.Requests;
+using Telegram.Bot.Types.ReplyMarkups;
 using Telegrom.Core.TelegramModel;
 using Telegrom.StateMachine;
 using Telegrom.StateMachine.Attributes;
@@ -24,7 +26,7 @@ namespace ShowMustNotGoOn.Core.States
         public override async Task OnEnter(CancellationToken cancellationToken)
         {
             SendPhotoRequest.ReplyMarkup = InlineKeyboardMarkup;
-            await _stateContext.UpdateContext.SessionContext.PostRequestAsync(SendPhotoRequest, cancellationToken);
+            await _stateContext.UpdateContext.SessionContext.PostRequestAsync(new Request(SendPhotoRequest), cancellationToken);
         }
     }
 }
