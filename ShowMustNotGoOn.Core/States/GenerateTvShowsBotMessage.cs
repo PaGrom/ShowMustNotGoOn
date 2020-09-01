@@ -39,18 +39,19 @@ namespace ShowMustNotGoOn.Core.States
         {
             var messageTextString = ((Message)_stateContext.UpdateContext.Update).Text.Trim();
 
-            var messageText = new MessageText
+            var messageText = await _globalAttributesService
+                .GetGlobalAttributesAsync<MessageText>()
+                .SingleOrDefaultAsync(t => t.Text == messageTextString, cancellationToken);
+
+            if (messageText == null)
             {
-                Text = messageTextString
-            };
+                messageText = new MessageText
+                {
+                    Id = Guid.NewGuid(),
+                    Text = messageTextString
+                };
 
-            var messageTextId = await _globalAttributesService.GetAttributeIdByValueAsync(messageText, cancellationToken);
-
-            if (messageTextId == null)
-            {
-                messageTextId = Guid.NewGuid();
-
-                await _globalAttributesService.CreateOrUpdateGlobalAttributeAsync(messageTextId.Value, messageText, cancellationToken);
+                await _globalAttributesService.CreateOrUpdateGlobalAttributeAsync(messageText, cancellationToken);
             }
 
             CurrentTvShowInfo = TvShowsInfos.First();
@@ -59,7 +60,7 @@ namespace ShowMustNotGoOn.Core.States
             {
                 Id = Guid.NewGuid(),
                 BotCommandType = BotCommandType.NotCommand,
-                MessageTextId = messageTextId.Value,
+                MessageTextId = messageText.Id,
                 TvShowInfo = CurrentTvShowInfo
             };
 

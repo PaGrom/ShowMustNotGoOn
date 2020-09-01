@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Linq.Async" Version="4.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Telegrom\Telegrom.Core\Telegrom.Core.csproj" />
     <ProjectReference Include="..\Telegrom\Telegrom.StateMachine\Telegrom.StateMachine.csproj" />
   </ItemGroup>

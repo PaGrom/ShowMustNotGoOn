@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -28,20 +29,21 @@ namespace ShowMustNotGoOn.TvShowsService
 
         public async Task<Guid> AddNewTvShowAsync(TvShowDescription tvShowDescription, CancellationToken cancellationToken)
         {
-            var guid = await _globalAttributesService.GetAttributeIdByValueAsync(tvShowDescription, cancellationToken);
+            var existedTvShowDescription = await _globalAttributesService
+                .GetGlobalAttributesAsync<TvShowDescription>()
+                .SingleOrDefaultAsync(d => d.MyShowsId == tvShowDescription.MyShowsId, cancellationToken);
 
-            if (guid != null)
+            if (existedTvShowDescription != null)
             {
-                _logger.LogInformation($"TV Show '{tvShowDescription.Title}' (Id: {tvShowDescription.Id}) already exists in db");
-            }
-            else
-            {
-                _logger.LogInformation($"Adding TV Show '{tvShowDescription.Title}' (Id: {tvShowDescription.Id}) to db");
-                guid = Guid.NewGuid();
-                await _globalAttributesService.CreateOrUpdateGlobalAttributeAsync(guid.Value, tvShowDescription, cancellationToken);
+                _logger.LogInformation($"TV Show '{tvShowDescription.Title}' (MyShowsId: {tvShowDescription.MyShowsId}) already exists in db");
+                return existedTvShowDescription.Id;
             }
 
-            return guid.Value;
+            _logger.LogInformation($"Adding TV Show '{tvShowDescription.Title}' (MyShowsId: {tvShowDescription.MyShowsId}) to db");
+            tvShowDescription.Id = Guid.NewGuid();
+            await _globalAttributesService.CreateOrUpdateGlobalAttributeAsync(tvShowDescription, cancellationToken);
+
+            return tvShowDescription.Id;
         }
 
         public Task<IEnumerable<TvShowInfo>> SearchTvShowsAsync(string name, CancellationToken cancellationToken)

@@ -1,8 +1,12 @@
-﻿namespace ShowMustNotGoOn.Core.Model
+﻿using System;
+using Telegrom.Core;
+
+namespace ShowMustNotGoOn.Core.Model
 {
-    public sealed class TvShowDescription
+    public sealed class TvShowDescription : IGlobalAttribute
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
+        public int MyShowsId { get; set; }
         public string Title { get; set; }
         public string TitleOriginal { get; set; }
         public string Description { get; set; }

@@ -57,8 +57,8 @@ namespace ShowMustNotGoOn
                     Socks5Username = appSettings.TelegramSettings.Socks5Username,
                     Socks5Password = appSettings.TelegramSettings.Socks5Password
                 })
-                //.UseInMemoryDatabase("123", optionsBuilder => optionsBuilder.EnableSensitiveDataLogging())
-                .UseSqliteDatabase(appSettings.DatabaseSettings.ConnectionString, optionsBuilder => optionsBuilder.EnableSensitiveDataLogging())
+                .UseInMemoryDatabase("123", optionsBuilder => optionsBuilder.EnableSensitiveDataLogging())
+                //.UseSqliteDatabase(appSettings.DatabaseSettings.ConnectionString, optionsBuilder => optionsBuilder.EnableSensitiveDataLogging())
                 .AddStateMachineBuilder(stateMachineBuilder);
         }
     }
