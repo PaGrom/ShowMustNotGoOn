@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using ShowMustNotGoOn.Core.Model;
 using Telegrom.StateMachine;
 using Telegrom.StateMachine.Attributes;
-using Message = Telegrom.Core.TelegramModel.Message;
 
 namespace ShowMustNotGoOn.Core.States
 {
@@ -25,7 +24,7 @@ namespace ShowMustNotGoOn.Core.States
 
         public override async Task OnEnter(CancellationToken cancellationToken)
         {
-            TvShowsInfos = (await _tvShowsService.SearchTvShowsAsync(((Message)_stateContext.UpdateContext.Update).Text.Trim(), cancellationToken)).ToList();
+            TvShowsInfos = (await _tvShowsService.SearchTvShowsAsync(_stateContext.UpdateContext.Update.Message.Text.Trim(), cancellationToken)).ToList();
         }
     }
 }

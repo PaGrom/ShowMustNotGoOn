@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using ShowMustNotGoOn.Core.Model;
 using Telegrom.Core;
-using Telegrom.Core.TelegramModel;
 using Telegrom.StateMachine;
 using Telegrom.StateMachine.Attributes;
 
@@ -32,7 +31,7 @@ namespace ShowMustNotGoOn.Core.States
 
         public override async Task OnEnter(CancellationToken cancellationToken)
         {
-            var callbackQuery = _stateContext.UpdateContext.Update as CallbackQuery;
+            var callbackQuery = _stateContext.UpdateContext.Update.CallbackQuery;
 
             var callbackId = Guid.Parse(callbackQuery.Data);
 

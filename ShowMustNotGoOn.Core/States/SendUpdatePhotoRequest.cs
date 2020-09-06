@@ -6,7 +6,6 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
 using Telegrom.StateMachine;
 using Telegrom.StateMachine.Attributes;
-using CallbackQuery = Telegrom.Core.TelegramModel.CallbackQuery;
 
 namespace ShowMustNotGoOn.Core.States
 {
@@ -31,7 +30,7 @@ namespace ShowMustNotGoOn.Core.States
         {
             var userId = _stateContext.UpdateContext.SessionContext.User.Id;
 
-            var callbackQuery = _stateContext.UpdateContext.Update as CallbackQuery;
+            var callbackQuery = _stateContext.UpdateContext.Update.CallbackQuery;
 
             var answerCallbackQueryRequest = new AnswerCallbackQueryRequest(callbackQuery.Id);
 
@@ -39,11 +38,11 @@ namespace ShowMustNotGoOn.Core.States
 
             var tvShowDescription = await _tvShowsService.GetTvShowDescriptionAsync(CurrentTvShowInfo.MyShowsId, cancellationToken);
 
-            var editMessageMediaRequest = new EditMessageMediaRequest(userId, callbackQuery.MessageId, new InputMediaPhoto(new InputMedia(tvShowDescription.Image)));
+            var editMessageMediaRequest = new EditMessageMediaRequest(userId, callbackQuery.Message.MessageId, new InputMediaPhoto(new InputMedia(tvShowDescription.Image)));
 
             await _stateContext.UpdateContext.SessionContext.PostRequestAsync(editMessageMediaRequest, cancellationToken);
 
-            var editCaptionRequest = new EditMessageCaptionRequest(userId, callbackQuery.MessageId, $"{ tvShowDescription.Title } / { tvShowDescription.TitleOriginal}")
+            var editCaptionRequest = new EditMessageCaptionRequest(userId, callbackQuery.Message.MessageId, $"{ tvShowDescription.Title } / { tvShowDescription.TitleOriginal}")
             {
                 ReplyMarkup = InlineKeyboardMarkup
             };

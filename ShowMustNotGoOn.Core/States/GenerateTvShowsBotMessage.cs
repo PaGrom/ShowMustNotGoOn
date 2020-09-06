@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using ShowMustNotGoOn.Core.Model;
 using Telegrom.Core;
-using Telegrom.Core.TelegramModel;
 using Telegrom.StateMachine;
 using Telegrom.StateMachine.Attributes;
 
@@ -37,7 +36,7 @@ namespace ShowMustNotGoOn.Core.States
 
         public override async Task OnEnter(CancellationToken cancellationToken)
         {
-            var messageTextString = ((Message)_stateContext.UpdateContext.Update).Text.Trim();
+            var messageTextString = _stateContext.UpdateContext.Update.Message.Text.Trim();
 
             var messageText = await _globalAttributesService
                 .GetGlobalAttributesAsync<MessageText>()

@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using ShowMustNotGoOn.Core.Model;
 using ShowMustNotGoOn.Core.States;
-using Telegrom.Core.TelegramModel;
+using Telegram.Bot.Types.Enums;
 using Telegrom.StateMachine;
 using Telegrom.StateMachine.Builder;
 
@@ -22,10 +21,9 @@ namespace ShowMustNotGoOn
                 .SetNext(
                     NextStateKind.AfterHandle,
                     new IfState(
-                        ctx => Task.FromResult(ctx.UpdateContext.Update is Message message
-                                               && message.IsCommand()
-                                               && string.Equals(message.Text, "/start",
-                                                   StringComparison.InvariantCultureIgnoreCase)),
+                        ctx =>
+                            ctx.UpdateContext.Update.Type == UpdateType.Message
+                            && string.Equals(ctx.UpdateContext.Update.Message.Text.Trim(), "/start", StringComparison.InvariantCultureIgnoreCase),
                         typeof(SendWelcomeMessage)),
                     new DefaultState(initStateNode));
 
@@ -39,10 +37,10 @@ namespace ShowMustNotGoOn
                 .SetNext(
                     NextStateKind.AfterHandle,
                     new IfState(
-                        ctx => Task.FromResult(ctx.UpdateContext.Update is Message),
+                        ctx => ctx.UpdateContext.Update.Type == UpdateType.Message,
                         typeof(HandleMessage)),
                     new IfState(
-                        ctx => Task.FromResult(ctx.UpdateContext.Update is CallbackQuery),
+                        ctx => ctx.UpdateContext.Update.Type == UpdateType.CallbackQuery,
                         typeof(HandleCallbackQuery)),
                     new DefaultState(defaultHandleUpdateState));
 
@@ -50,7 +48,7 @@ namespace ShowMustNotGoOn
                 .SetNext(
                     NextStateKind.AfterOnEnter,
                     new IfState(
-                        ctx => Task.FromResult(((Message) ctx.UpdateContext.Update).IsCommand()),
+                        ctx => ctx.UpdateContext.Update.Message.Text.Trim().StartsWith("/"),
                         typeof(HandleCommand)),
                     new DefaultState(
                         typeof(FindTvShows)));
@@ -63,7 +61,7 @@ namespace ShowMustNotGoOn
                         {
                             var (_, value) = ctx.Attributes[nameof(FindTvShows.TvShowsInfos)];
                             var tvShows = (List<TvShowInfo>) value;
-                            return Task.FromResult(tvShows.Any());
+                            return tvShows.Any();
                         },
                         typeof(GenerateTvShowsBotMessage)),
                     new DefaultState(
@@ -88,7 +86,7 @@ namespace ShowMustNotGoOn
                         {
                             var (_, value) = ctx.Attributes[nameof(HandleCallbackQuery.Callback)];
                             var callback = (Callback) value;
-                            return Task.FromResult(callback.CallbackType == CallbackType.Next);
+                            return callback.CallbackType == CallbackType.Next;
                         },
                         typeof(HandleNextCallbackQuery)),
                     new IfState(
@@ -96,7 +94,7 @@ namespace ShowMustNotGoOn
                         {
                             var (_, value) = ctx.Attributes[nameof(HandleCallbackQuery.Callback)];
                             var callback = (Callback) value;
-                            return Task.FromResult(callback.CallbackType == CallbackType.Prev);
+                            return callback.CallbackType == CallbackType.Prev;
                         },
                         typeof(HandlePrevCallbackQuery)),
                     new DefaultState(defaultHandleUpdateState));
